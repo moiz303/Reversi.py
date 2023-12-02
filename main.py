@@ -33,12 +33,12 @@ class Board:
     def on_click(self, cell):
         x, y = cell
         for i in range(self.width):
-            self.board[i][y] = (self.board[i][y] + 1) % 2
+            self.board[i][y] = self.board[x][y] % 2
         for i in range(self.height):
             # чтобы не перекрашивать дважды
             if i == y:
                 continue
-            self.board[x][i] = (self.board[x][i] + 1) % 2
+            self.board[x][i] = self.board[x][y] % 2
 
     def get_cell(self, mouse_pos):
         cell_x = (mouse_pos[0] - self.left) // self.cell_size
@@ -58,7 +58,7 @@ def main():
     n = int(input())
     size = 800, 800
     screen = pygame.display.set_mode(size)
-    pygame.display.set_caption('Чёрное в белое и наоборот')
+    pygame.display.set_caption('Реверси')
 
     # поле n на n
     board = Board(n, n)
