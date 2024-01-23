@@ -2,9 +2,7 @@ import pygame
 import os
 import sys
 
-
 all_sprites = pygame.sprite.Group()
-cou = 0
 
 
 def load_image(name):
@@ -27,7 +25,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.rect = self.rect.move(x, y)
 
     def cut_sheet(self, sheet, columns, rows):
-        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns, 
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
                                 sheet.get_height() // rows)
         for j in range(rows):
             for i in range(columns):
@@ -40,17 +38,26 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
 
 
+dragon = AnimatedSprite(load_image("dragon_sheet8x2.xcf"), 8, 2, 50, 50)
+fps = 50
 screen = pygame.display.set_mode((200, 200))
 clock = pygame.time.Clock()
-dragon = AnimatedSprite(load_image("dragon_sheet8x2.xcf"), 8, 2, 50, 50)
 running = True
+cou = 0
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    dragon.update()
+        if event.type == pygame.KEYDOWN:
+            for _ in range(16):
+                dragon.update()
+                screen.fill((0, 0, 0))
+                all_sprites.draw(screen)
+                pygame.display.flip()
+                clock.tick(10)
+
     screen.fill((0, 0, 0))
     all_sprites.draw(screen)
     pygame.display.flip()
-    clock.tick(10)
+    clock.tick(fps)
 pygame.quit()
